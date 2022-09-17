@@ -505,6 +505,16 @@ function App(props) {
               Debug Contracts
             </Link>
           </Menu.Item>
+          <Menu.Item key="/payouts">
+            <Link
+              onClick={() => {
+                setRoute("/payouts");
+              }}
+              to="/payouts"
+            >
+              Payout Tracker
+            </Link>
+          </Menu.Item>
         </Menu>
 
         <Switch>
@@ -613,6 +623,9 @@ function App(props) {
               blockExplorer={blockExplorer}
               contractConfig={contractConfig}
             />
+          </Route>
+          <Route path="/payouts">
+            <h1>TEST</h1>
           </Route>
         </Switch>
       </BrowserRouter>
