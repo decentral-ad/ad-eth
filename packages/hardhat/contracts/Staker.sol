@@ -38,7 +38,7 @@ contract Staker {
     emit Stake(msg.sender, msg.value);
   }
 
-  function pay(address indexed receiver, uint256 amount) public payable {
+  function pay(address indexed receiver, uint256 amount) private payable {
     // update the receiver's balance
     balances[receiver] += amount;
     
