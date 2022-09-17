@@ -56,7 +56,7 @@ contract Staker {
     emit Stake(msg.sender, msg.value);
   }
 
-  function addView(address receiver) private {
+  function addView(address receiver) public {
     // update the receiver's balance
     billboardsViews[receiver] += 1;
     
@@ -109,18 +109,6 @@ contract Staker {
   // Add a `timeLeft()` view function that returns the time left before the deadline for the frontend
   function timeLeft() public view returns (uint256 timeleft) {
     return deadline >= block.timestamp ? deadline - block.timestamp: 0;
-  }
-
-  function getBillboards() public view returns (address[] memory) {
-   /* address[] memory ret = new address[](addressRegistryCount);
-    for (uint i = 0; i < billboardsViews; i++) {
-        ret[i] = billboardsViews[i];
-    }
-    return ret;
-  }
-
-  function depositToBillboards() private {
-    */
   }
 
   // Add the `receive()` special function that receives eth and calls stake()

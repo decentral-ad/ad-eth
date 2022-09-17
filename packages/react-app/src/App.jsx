@@ -274,6 +274,10 @@ function App(props) {
   const complete = useContractReader(readContracts, "ExampleExternalContract", "completed");
   console.log("✅ complete:", complete);
 
+  // ** keep track of the billboard views
+  const billboards = useContractReader(readContracts, "Staker", "billboardViews");
+  console.log("billboard:", billboards);
+
   const exampleExternalContractBalance = useBalance(
     localProvider,
     readContracts && readContracts.ExampleExternalContract ? readContracts.ExampleExternalContract.address : null,
