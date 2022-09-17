@@ -16,7 +16,7 @@ contract Staker {
 
   // Staking deadline. After this deadline, anyone send the funds
   // to the other contract
-  uint256 public deadline = block.timestamp + 180 seconds;
+  uint256 public deadline = block.timestamp + 180 minutes;
 
   // Collect funds in a payable `stake()` function and track individual `balances` with a mapping:
   //  ( make sure to add a `Stake(address,uint256)` event and emit it for the frontend <List/> display )
@@ -25,10 +25,28 @@ contract Staker {
   event Stake(address indexed sender, uint256 amount);
 
   // emit event each time
-  event Paid(address indexed receiver, uint256 amount);
+  event Paid(address indexed sender, uint256 amount);
+
+  // emit event each time view is counted
+  event Viewed(address indexed billboard, uint256 totalViews);
+
+  // emit event for timeout
+  event TimeRunsOut();
 
   // Balances of the advertisers' staked funds
   mapping(address => uint256) public balances;
+
+  // balances of billboards accounts
+  mapping(address => uint256) public payableBalances;
+
+  // number of views by billboards
+  mapping(address => uint256) public billboardsViews;
+
+  // total views
+  uint256 public totalViews = 0;
+
+  // total accounts payable
+  uint256 public totalMemory = 0;
 
   function stake() public payable {
     // update the user's balance
@@ -38,12 +56,11 @@ contract Staker {
     emit Stake(msg.sender, msg.value);
   }
 
-  function pay(address indexed receiver, uint256 amount) private payable {
+  function addView(address receiver) private {
     // update the receiver's balance
-    balances[receiver] += amount;
+    billboardsViews[receiver] += 1;
     
-    // emit the event to notify the blockchain that we have correctly Staked some fund for the user
-    emit Paid(msg.sender, msg.value);
+    emit Viewed(receiver, billboardsViews[receiver]);
   }
 
 
@@ -92,6 +109,18 @@ contract Staker {
   // Add a `timeLeft()` view function that returns the time left before the deadline for the frontend
   function timeLeft() public view returns (uint256 timeleft) {
     return deadline >= block.timestamp ? deadline - block.timestamp: 0;
+  }
+
+  function getBillboards() public view returns (address[] memory) {
+   /* address[] memory ret = new address[](addressRegistryCount);
+    for (uint i = 0; i < billboardsViews; i++) {
+        ret[i] = billboardsViews[i];
+    }
+    return ret;
+  }
+
+  function depositToBillboards() private {
+    */
   }
 
   // Add the `receive()` special function that receives eth and calls stake()
