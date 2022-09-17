@@ -28,6 +28,7 @@ import Portis from "@portis/web3";
 import Fortmatic from "fortmatic";
 import Authereum from "authereum";
 import humanizeDuration from "humanize-duration";
+//import PieChart from "react-pie-graph-chart";
 
 const { ethers } = require("ethers");
 /*
@@ -625,7 +626,12 @@ function App(props) {
             />
           </Route>
           <Route path="/payouts">
-            <h1>TEST</h1>
+            <div style={{ padding: 8, marginTop: 32 }}>
+              <div>Timeleft:</div>
+              {timeLeft && humanizeDuration(timeLeft.toNumber() * 1000)}
+            </div>
+
+            <h1>Interaction Leaderboard</h1>
           </Route>
         </Switch>
       </BrowserRouter>
