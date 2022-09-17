@@ -24,7 +24,10 @@ contract Staker {
   // emit event each time
   event Stake(address indexed sender, uint256 amount);
 
-  // Balances of the users' staked funds
+  // emit event each time
+  event Paid(address indexed receiver, uint256 amount);
+
+  // Balances of the advertisers' staked funds
   mapping(address => uint256) public balances;
 
   function stake() public payable {
@@ -33,6 +36,14 @@ contract Staker {
     
     // emit the event to notify the blockchain that we have correctly Staked some fund for the user
     emit Stake(msg.sender, msg.value);
+  }
+
+  function pay(address indexed receiver, uint256 amount) private payable {
+    // update the receiver's balance
+    balances[receiver] += amount;
+    
+    // emit the event to notify the blockchain that we have correctly Staked some fund for the user
+    emit Paid(msg.sender, msg.value);
   }
 
 
