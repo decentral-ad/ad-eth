@@ -28,7 +28,7 @@ import Portis from "@portis/web3";
 import Fortmatic from "fortmatic";
 import Authereum from "authereum";
 import humanizeDuration from "humanize-duration";
-//import PieChart from "react-pie-graph-chart";
+import { PieChart } from 'react-minimal-pie-chart';
 
 const { ethers } = require("ethers");
 /*
@@ -522,72 +522,85 @@ function App(props) {
         <Switch>
           <Route exact path="/">
             {completeDisplay}
+            <div style={{ display: "flex", justifyContent: "center" }}>
+              <div>
+                <div style={{ padding: 8, marginTop: 32 }}>
+                  <div>Staker Contract:</div>
+                  <Address value={readContracts && readContracts.Staker && readContracts.Staker.address} />
+                </div>
 
-            <div style={{ padding: 8, marginTop: 32 }}>
-              <div>Staker Contract:</div>
-              <Address value={readContracts && readContracts.Staker && readContracts.Staker.address} />
-            </div>
+                <div style={{ padding: 8, marginTop: 32 }}>
+                  <div>Timeleft:</div>
+                  {timeLeft && humanizeDuration(timeLeft.toNumber() * 1000)}
+                </div>
 
-            <div style={{ padding: 8, marginTop: 32 }}>
-              <div>Timeleft:</div>
-              {timeLeft && humanizeDuration(timeLeft.toNumber() * 1000)}
-            </div>
+                <div style={{ padding: 8 }}>
+                  <div>Total staked:</div>
+                  <Balance balance={stakerContractBalance} fontSize={64} />/<Balance balance={threshold} fontSize={64} />
+                </div>
 
-            <div style={{ padding: 8 }}>
-              <div>Total staked:</div>
-              <Balance balance={stakerContractBalance} fontSize={64} />/<Balance balance={threshold} fontSize={64} />
-            </div>
+                <div style={{ padding: 8 }}>
+                  <div>You staked:</div>
+                  <Balance balance={balanceStaked} fontSize={64} />
+                </div>
 
-            <div style={{ padding: 8 }}>
-              <div>You staked:</div>
-              <Balance balance={balanceStaked} fontSize={64} />
-            </div>
+                <div style={{ padding: 8 }}>
+                  <Button
+                    type={"default"}
+                    onClick={() => {
+                      tx(writeContracts.Staker.execute());
+                    }}
+                  >
+                    📡 Execute!
+                  </Button>
+                </div>
 
-            <div style={{ padding: 8 }}>
-              <Button
-                type={"default"}
-                onClick={() => {
-                  tx(writeContracts.Staker.execute());
-                }}
-              >
-                📡 Execute!
-              </Button>
-            </div>
+                <div style={{ padding: 8 }}>
+                  <Button
+                    type={"default"}
+                    onClick={() => {
+                      tx(writeContracts.Staker.withdraw(address));
+                    }}
+                  >
+                    🏧 Withdraw
+                  </Button>
+                </div>
 
-            <div style={{ padding: 8 }}>
-              <Button
-                type={"default"}
-                onClick={() => {
-                  tx(writeContracts.Staker.withdraw(address));
-                }}
-              >
-                🏧 Withdraw
-              </Button>
-            </div>
-
-            <div style={{ padding: 8 }}>
-              <Input
-                style={{ width: 200 }}
-                placeholder="0.001"
-                type="number"
-                onChange={e => setStake(e.target.value)}
-              />
-              <Button
-                type={balanceStaked ? "success" : "primary"}
-                disabled={stake <= 0 ? true : false}
-                onClick={() => {
-                  tx(writeContracts.Staker.stake({ value: ethers.utils.parseEther(stake) }));
-                }}
-              >
-                🥩 Stake {stake} ether!
-              </Button>
-            </div>
+                <div style={{ padding: 8 }}>
+                  <Input
+                    style={{ width: 200 }}
+                    placeholder="0.001"
+                    type="number"
+                    onChange={e => setStake(e.target.value)}
+                  />
+                  <Button
+                    type={balanceStaked ? "success" : "primary"}
+                    disabled={stake <= 0 ? true : false}
+                    onClick={() => {
+                      tx(writeContracts.Staker.stake({ value: ethers.utils.parseEther(stake) }));
+                    }}
+                  >
+                    🥩 Stake {stake} ether!
+                  </Button>
+                </div>
+              </div>
 
             {/*
                 🎛 this scaffolding is full of commonly used components
                 this <Contract/> component will automatically parse your ABI
                 and give you a form to interact with it locally
             */}
+              <div style={{ marginLeft: "100px", display: "flex", alignItems: "center" }}>
+                <PieChart
+                  style={{ width: 400, height: 400 }}
+                  data={[
+                    { title: 'One', value: 10, color: '#E38627' },
+                    { title: 'Two', value: 15, color: '#C13C37' },
+                    { title: 'Three', value: 20, color: '#6A2135' },
+                  ]}
+                />
+              </div>
+            </div>
 
             <div style={{ width: 500, margin: "auto", marginTop: 64 }}>
               <div>Stake Events:</div>
