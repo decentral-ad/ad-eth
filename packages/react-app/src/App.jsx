@@ -1,7 +1,7 @@
 import WalletConnectProvider from "@walletconnect/web3-provider";
 //import Torus from "@toruslabs/torus-embed"
 import WalletLink from "walletlink";
-import { Alert, Button, Col, Menu, Row, List } from "antd";
+import { Alert, Button, Col, Menu, Row, List, Input } from "antd";
 import "antd/dist/antd.css";
 import React, { useCallback, useEffect, useState } from "react";
 import { BrowserRouter, Link, Route, Switch } from "react-router-dom";
@@ -173,6 +173,7 @@ function App(props) {
 
   const [injectedProvider, setInjectedProvider] = useState();
   const [address, setAddress] = useState();
+  const [stake, setStake] = useState("0.001");
 
   const logoutOfWeb3Modal = async () => {
     await web3Modal.clearCachedProvider();
@@ -556,7 +557,7 @@ function App(props) {
               <Button
                 type={"default"}
                 onClick={() => {
-                  tx(writeContracts.Staker.withdraw());
+                  tx(writeContracts.Staker.withdraw(address));
                 }}
               >
                 🏧 Withdraw
@@ -564,13 +565,20 @@ function App(props) {
             </div>
 
             <div style={{ padding: 8 }}>
+              <Input
+                style={{ width: 200 }}
+                placeholder="0.001"
+                type="number"
+                onChange={e => setStake(e.target.value)}
+              />
               <Button
                 type={balanceStaked ? "success" : "primary"}
+                disabled={stake <= 0 ? true : false}
                 onClick={() => {
-                  tx(writeContracts.Staker.stake({ value: ethers.utils.parseEther("0.5") }));
+                  tx(writeContracts.Staker.stake({ value: ethers.utils.parseEther(stake) }));
                 }}
               >
-                🥩 Stake 0.5 ether!
+                🥩 Stake {stake} ether!
               </Button>
             </div>
 
