@@ -281,6 +281,9 @@ function App(props) {
   const timeLeft = useContractReader(readContracts, "Staker", "timeLeft");
   console.log("⏳ timeLeft:", timeLeft);
 
+  const userAccounts = useContractReader(readContracts, "Staker", "getUserAccounts");
+  console.log("userAccounts:", userAccounts);
+
   // ** Listen for when the contract has been 'completed'
   const complete = useContractReader(readContracts, "ExampleExternalContract", "completed");
   console.log("✅ complete:", complete);
@@ -561,6 +564,18 @@ function App(props) {
                 <div style={{ padding: 8 }}>
                   <div>You staked:</div>
                   <Balance balance={balanceStaked} fontSize={64} />
+                </div>
+
+                <div style={{ padding: 8 }}>
+                  <Button
+                    type={"default"}
+                    onClick={() => {
+                      console.log("FFUCKDSOFJSIDOFJSIODFJSIOJFOSDJFOSIDJFIOAJDS")
+                      console.log(writeContracts.Staker.getUserAccounts());
+                    }}
+                  >
+                    📡 Get addresses!
+                  </Button>
                 </div>
 
                 <div style={{ padding: 8 }}>
