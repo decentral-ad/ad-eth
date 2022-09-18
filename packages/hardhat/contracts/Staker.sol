@@ -58,9 +58,11 @@ contract Staker {
     emit Stake(msg.sender, msg.value);
   }
 
+  // when a view is added, this function is called
   function addView(address receiver) public {
-    // update the receiver's balance
+    // update the receiver's viewcount
     billboardsViews[receiver] += 1;
+    totalViews += 1;
     
     emit Viewed(receiver, billboardsViews[receiver]);
   }

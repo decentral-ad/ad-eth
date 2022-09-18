@@ -286,8 +286,12 @@ function App(props) {
   console.log("✅ complete:", complete);
 
   // ** keep track of the billboard views
-  const billboards = useContractReader(readContracts, "Staker", "billboardViews");
+  const billboards = useContractReader(readContracts, "Staker", "billboardsViews");
   console.log("billboard:", billboards);
+
+  // ** keep track of total views
+  const totalViews = useContractReader(readContracts, "Staker", "totalViews");
+  console.log("total views: ", totalViews);
 
   const exampleExternalContractBalance = useBalance(
     localProvider,
@@ -669,6 +673,15 @@ function App(props) {
             </div>
 
             <h1>Interaction Leaderboard</h1>
+            <p>Total Views: 60</p>
+
+            <Button
+                onClick={() => {
+                  tx(writeContracts.Staker.addView(address));
+                }}
+              >
+                Add view for your address for demonstration purposes
+              </Button>
           </Route>
         </Switch>
       </BrowserRouter>
