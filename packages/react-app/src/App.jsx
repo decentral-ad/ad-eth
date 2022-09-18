@@ -175,6 +175,7 @@ function App(props) {
   const [injectedProvider, setInjectedProvider] = useState();
   const [address, setAddress] = useState();
   const [stake, setStake] = useState("0.001");
+  const [balances, setBalances] = useState();
 
   const logoutOfWeb3Modal = async () => {
     await web3Modal.clearCachedProvider();
@@ -262,6 +263,16 @@ function App(props) {
   const balanceStaked = useContractReader(readContracts, "Staker", "balances", [address]);
   console.log("💸 balanceStaked:", balanceStaked);
 
+  const contractBalances = useContractReader(readContracts, "balances");
+  console.log("BALANCES", contractBalances);
+
+  const contractAddresses = useContractReader(readContracts, "addresses");
+  console.log("contractAddresses", contractAddresses);
+
+  useEffect(() => {
+    setBalances(contractBalances)
+  })
+  
   // ** 📟 Listen for broadcast events
   const stakeEvents = useEventListener(readContracts, "Staker", "Stake", localProvider, 1);
   console.log("📟 stake events:", stakeEvents);
@@ -602,6 +613,7 @@ function App(props) {
                     { title: 'Two', value: 15, color: '#C13C37' },
                     { title: 'Three', value: 20, color: '#6A2135' },
                   ]}
+                  label={() => "1"}
                 />
               </div>
             </div>

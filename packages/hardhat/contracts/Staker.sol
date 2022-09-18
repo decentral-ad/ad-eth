@@ -12,6 +12,8 @@ contract Staker {
       exampleExternalContract = ExampleExternalContract(exampleExternalContractAddress);
   }
 
+  address[] public addresses;
+
   uint256 public constant threshold = 1 wei;
 
   // Staking deadline. After this deadline, anyone send the funds
@@ -114,5 +116,17 @@ contract Staker {
   // Add the `receive()` special function that receives eth and calls stake()
   function receive() public {
     stake();
+  }
+
+  function getUserAccounts() public returns(address[] memory, uint[] memory) {
+    address[] memory mAddresses = new address[](addresses.length);
+    uint[] memory mDeposits = new uint[](addresses.length);
+
+    for(uint i=0; i< addresses.length; i++) {
+      mAddresses[i] = addresses[i];
+      mDeposits[i] = balances[addresses[i]];
+    }
+
+    return (mAddresses, mDeposits);
   }
 }
